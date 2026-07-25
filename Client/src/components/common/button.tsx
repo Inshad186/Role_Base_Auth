@@ -8,9 +8,9 @@ type ButtonProps = {
 const Button = ({text, className, type, onClick} : ButtonProps) => {
   return (
     <button
-    onClick={onClick}
-    type={type}
-    className={className}>
+      type={type}
+      onClick={onClick}
+      className={className}>
         {text}
     </button>
   )

@@ -1,4 +1,3 @@
-import { refreshToken } from "../controllers/authController"
 import { findById, findOne } from "../repositories/authRepository"
 import { generateAccessToken, generateRefreshToken, verifyToken } from "../utils/jwt"
 
@@ -28,14 +27,13 @@ export const authService = async(email: string, password: string) => {
     }
 }
 
-export const sProfile = async(userId: string) => {
+export const getProfileService = async(userId: string) => {
     try {
         let user = await findById(userId)
         if(!user){
             throw new Error("user not found")
         }
-        let role = user?.role
-        return {role}
+        return {user}
     } catch (error) {
         throw error
     }

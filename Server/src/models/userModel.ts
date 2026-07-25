@@ -23,7 +23,7 @@ const userSchema = new Schema({
     },
     role:{
         type: String,
-        enum: ["CLIENT", "FREELANCER", 'NONE'],
+        enum: ["STUDENT", "INSTRUCTOR", 'NONE'],
         default: 'NONE'
     },
     isBlocked: {

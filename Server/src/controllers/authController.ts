@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import { authService, sProfile, srefreshToken } from "../services/authService"
+import { authService, getProfileService, srefreshToken } from "../services/authService"
 
 export const login = async(req: Request, res: Response, next: NextFunction) => {
     try {
@@ -11,7 +11,7 @@ export const login = async(req: Request, res: Response, next: NextFunction) => {
             sameSite: "strict",
             maxAge: 7 * 24 * 60 * 60 * 1000 
         })
-        res.status(200).json({accessToken, refreshToken, role})
+        res.status(200).json({accessToken, role})
     } catch (error) {
         next()
     }
@@ -25,11 +25,11 @@ export const home = (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-export const cProfile = async(req: Request, res: Response, next: NextFunction) => {
+export const getProfile = async(req: Request, res: Response, next: NextFunction) => {
     try {
         let userId = (req as any).user.userId
-        let {role} = await sProfile(userId)
-        res.status(200).json({role})
+        let {user} = await getProfileService(userId)
+        res.status(200).json({user})
     } catch (error) {
         next()
     }
