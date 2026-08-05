@@ -1,8 +1,22 @@
+import { useEffect, useState } from "react";
 import Header from "../../components/header";
 import { FaBookOpen, FaLock, FaUserGraduate } from "react-icons/fa";
+import { getProfile } from "../../api/userApi";
 
 
 const StudentHome = () => {
+  const [name, setName] = useState("")
+
+  useEffect(() => {
+    fetchUserName()
+  },[])
+
+  const fetchUserName = async() => {
+    const response = await getProfile()
+    if(response.success){
+      setName(response.data?.user?.name)
+    }
+  }
   return (
     <div className="min-h-screen bg-[#070B08] text-white">
 
@@ -15,7 +29,7 @@ const StudentHome = () => {
         <div className="mb-12">
 
           <h1 className="text-5xl font-bold">
-            Welcome Back{" _ "} <span className="text-green-600">Student</span>
+            Welcome Back{" "} <span className="text-green-600">{name.charAt(0).toUpperCase() + name.slice(1)}</span>
           </h1>
 
           <p className="mt-4 max-w-2xl text-gray-400">

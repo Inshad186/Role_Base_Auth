@@ -7,8 +7,33 @@ import ProtectedRoute from "./routes/protectedRoute"
 import StudentProfile from "./pages/student/studentProfile"
 import InstructorProfile from "./pages/instructor/instructorProfile"
 import LandingPage from "./pages/landingPage"
+import { useEffect } from "react"
+import Api from "./services/axios"
+import { endpointUrl } from "./constants/endpointUrl"
+import { useDispatch } from "react-redux"
+import { setAccessToken, logout } from "./redux/slices/authSlice"
+import { removeUser, setUser } from "./redux/slices/userSlice"
 
 const App = () => {
+
+  const dispatch = useDispatch()
+
+    useEffect(() => {
+    const restoreSession = async () => {
+      try {
+        const response = await Api.post(endpointUrl.REFRESH);
+
+        dispatch(setAccessToken(response.data.accessToken));
+        dispatch(setUser(response.data.user));
+      } catch {
+        dispatch(logout());
+        dispatch(removeUser());
+      }
+    };
+
+    restoreSession();
+  }, []);
+
   return (
     <Routes>
       <Route path="/" element={<LandingPage/>}/>

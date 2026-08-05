@@ -1,14 +1,15 @@
 import { Router } from "express";
-import { getProfile, home, login, refreshToken } from "../controllers/authController";
+import { authController } from "../controllers/authController";
 import authMiddleware from "../middlewares/authMiddleware";
 import roleMiddleware from "../middlewares/roleMiddleware";
 
 const router = Router()
 
-router.post("/login", login)
-router.get("/home",authMiddleware, roleMiddleware("CLIENT"), home.bind(home))
-router.get("/profile",authMiddleware, getProfile.bind(getProfile))
-router.post("/refreshToken", refreshToken.bind(refreshToken))
+router.post("/signup", authController.signUp)
+router.post("/login", authController.login)
+router.get("/profile",authMiddleware, roleMiddleware("STUDENT", "INSTRUCTOR"), authController.getProfile.bind(authController))
+router.post("/refreshToken", authController.refreshToken.bind(authController))
+router.post("/logout", authController.logout.bind(authController))
 
 export default router
 

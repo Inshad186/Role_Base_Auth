@@ -1,9 +1,19 @@
 import userModel from "../models/userModel";
 
-export const findOne = (email: string) => {
+const findOne = (email: string) => {
     return userModel.findOne({email})
 }
 
-export const findById = (userId: string) => {
+const findById = (userId: string) => {
     return userModel.findById(userId)
+}
+
+const create = (data: any) => {
+    return userModel.create(data)
+}
+
+export const authRepository = {
+    findOne,
+    findById,
+    create
 }

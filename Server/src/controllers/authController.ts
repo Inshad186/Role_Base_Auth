@@ -1,10 +1,20 @@
 import { Request, Response, NextFunction } from "express"
-import { authService, getProfileService, srefreshToken } from "../services/authService"
+import { authService } from "../services/authService"
+
+export const signUp = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const {...data} = req.body
+        const user = await authService.signUp(data)
+        res.status(200).json({user})
+    } catch (error) {
+        next()
+    }
+}
 
 export const login = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const {email, password} = req.body
-        const { accessToken, refreshToken, role }  = await authService(email, password)
+        const { accessToken, refreshToken, role }  = await authService.login(email, password)
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             secure: false,
@@ -17,18 +27,10 @@ export const login = async(req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-export const home = (req: Request, res: Response, next: NextFunction) => {
-    try {
-        res.status(200).json({success: true})
-    } catch (error) {
-        next()
-    }
-}
-
 export const getProfile = async(req: Request, res: Response, next: NextFunction) => {
     try {
         let userId = (req as any).user.userId
-        let {user} = await getProfileService(userId)
+        let {user} = await authService.getProfile(userId)
         res.status(200).json({user})
     } catch (error) {
         next()
@@ -41,9 +43,26 @@ export const refreshToken = async(req: Request, res: Response, next: NextFunctio
         if(!refreshToken){
             return res.status(401).json({message: "Refresh Token missing"})
         }
-        const accessToken = await srefreshToken(refreshToken)
+        const accessToken = await authService.refreshToken(refreshToken)
         res.status(200).json({accessToken})
     } catch (error) {
         next()
     }
+}
+
+export const logout = async ( req: Request, res: Response )=> {
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: false, 
+        sameSite: "strict",
+    });
+    res.status(200).json({ success: true, message: "Logged out successfully"});
+};
+
+export const authController = {
+    signUp,
+    login,
+    getProfile,
+    refreshToken,
+    logout
 }

@@ -1,6 +1,17 @@
 import Api from "../services/axios";
 import { endpointUrl } from "../constants/endpointUrl";
 
+export const signup = async(formData: any) => {
+    try {
+        const { data } = await Api.post(endpointUrl.SIGNUP, formData)
+        return {success: true, data}
+    } catch (error) {
+        const err = error as any
+        const message = err.response?.data?.error || "Something went wrong"
+        return {success: false, error: message}
+    }
+}
+
 export const login = async(formData: any) => {
     try {
         const { data } = await Api.post(endpointUrl.LOGIN, formData)
@@ -26,6 +37,17 @@ export const home = async() => {
 export const getProfile = async() => {
     try {
         const {data} = await Api.get(endpointUrl.PROFILE)
+        return {success: true, data}
+    } catch (error) {
+        const err = error as any
+        const message = err.response?.data?.error || "Something went wrong"
+        return {success: false, error: message}
+    }
+}
+
+export const logoutUser = async() => {
+    try {
+        const {data} = await Api.post(endpointUrl.LOGOUT)
         return {success: true, data}
     } catch (error) {
         const err = error as any

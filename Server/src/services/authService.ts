@@ -1,11 +1,33 @@
-import { findById, findOne } from "../repositories/authRepository"
+import bcrypt from "bcryptjs"
+import { authRepository } from "../repositories/authRepository"
 import { generateAccessToken, generateRefreshToken, verifyToken } from "../utils/jwt"
 
-export const authService = async(email: string, password: string) => {
+const signUp = async(data: any) => {
     try {
-        const user = await findOne(email)
-        if(!user){
-            throw new Error("User not Found")
+        const existingUser = await authRepository.findOne(data.email)
+
+        if(existingUser){
+            throw new Error("User is already exist")
+        }
+        const hashedPassword = await bcrypt.hash(data.password,10)
+
+        const user = await authRepository.create({...data, password: hashedPassword})
+        return user
+    } catch (error) {
+        throw new Error("User not created")
+    }
+}
+
+const login = async(email: string, password: string) => {
+    try {
+        const user = await authRepository.findOne(email)
+        if (!user) {
+            throw new Error("Invalid email or password");
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            throw new Error("Invalid email or password");
         }
 
         const accessToken = generateAccessToken(
@@ -27,9 +49,9 @@ export const authService = async(email: string, password: string) => {
     }
 }
 
-export const getProfileService = async(userId: string) => {
+const getProfile = async(userId: string) => {
     try {
-        let user = await findById(userId)
+        let user = await authRepository.findById(userId)
         if(!user){
             throw new Error("user not found")
         }
@@ -39,14 +61,14 @@ export const getProfileService = async(userId: string) => {
     }
 }
 
-export const srefreshToken = async(token: string) => {
+const refreshToken = async(token: string) => {
     try {
         const payload = await verifyToken(token)
         if(!payload){
             throw new Error("payload not found")
         }
 
-        const user = await findById(payload.userId)
+        const user = await authRepository.findById(payload.userId)
         if(!user){
             throw new Error("User not Found")
         }
@@ -61,4 +83,12 @@ export const srefreshToken = async(token: string) => {
     } catch (error) {
         throw error
     }
+}
+
+
+export const authService = {
+    signUp,
+    login,
+    getProfile,
+    refreshToken
 }

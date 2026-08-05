@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import AuthLayout from "../../components/auth/authLayout"
 import Input from "../../components/common/input";
 import Button from "../../components/common/button";
 import SocialLogin from "../../components/auth/socialLogin";
-
 import { login } from "../../api/userApi";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../redux/store";
+import { setAccessToken } from "../../redux/slices/authSlice";
 
 interface LoginForm {
   email: string;
@@ -26,11 +27,11 @@ const Login = () => {
     password: "",
   });
 
-  const [error, setError] = useState<ErrorState>({});
+  const [error, setError] = useState<ErrorState>({field: "", message: ""});
+  const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch<AppDispatch>()
 
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChange = ( event: React.ChangeEvent<HTMLInputElement> ) => {
     const { name, value } = event.target;
 
     setFormData((prev) => ({
@@ -44,33 +45,39 @@ const Login = () => {
   const handleSubmit = async ( e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    setLoading(true)
+
     try {
       const response = await login(formData);
 
+      if (!response.success) {
+        setError({
+          field: "form",
+          message: response.error,
+        });
+        return;
+      }
+
       if (response.success) {
-        localStorage.setItem(
-          "accessToken",
-          response.data.accessToken
-        );
+        dispatch(setAccessToken(response.data?.accessToken));
 
         if (response.data.role === "STUDENT") {
           navigate("/studentHome");
-        } else {
+        } else if(response.data.role === "INSTRUCTOR") {
           navigate("/instructorHome");
         }
       }
     } catch (error) {
-      setError({
-        field: "form",
-        message: "Invalid Email or Password",
-      });
+      setError({ field: "form", message: "Invalid Email or Password" });
+    } finally {
+      setLoading(false)
     }
   };
 
   return (
     <AuthLayout
       title="Welcome Back 👋"
-      subtitle="Login to continue your freelance journey."
+      subtitle="Login to continue your online examination journey."
       imagePosition="left"
     >
       <form onSubmit={handleSubmit}>
@@ -81,6 +88,7 @@ const Login = () => {
           name="email"
           placeholder="Enter your email"
           value={formData.email}
+          autocomplete="email"
           onChange={handleChange}
         />
 
@@ -90,11 +98,12 @@ const Login = () => {
           name="password"
           placeholder="Enter your password"
           value={formData.password}
+          autocomplete="current-password"
           onChange={handleChange}
         />
 
         {error.field === "form" && (
-          <p className="mb-4 text-center text-red-400">
+          <p className="mb-4 text-center text-red-500">
             {error.message}
           </p>
         )}
@@ -110,10 +119,13 @@ const Login = () => {
 
         </div>
 
-        <Button text="Sign In" 
+        <button 
+        type="submit"
+        disabled={loading}
         className="w-full rounded-xl bg-green-500 py-3 font-semibold text-black transition-all duration-300 
-        hover:scale-[1.02] hover:bg-green-400 hover:shadow-lg hover:shadow-green-500/40"
-        />
+        hover:scale-[1.02] hover:bg-green-400 hover:shadow-lg hover:shadow-green-500/40">
+          {loading? "Logging in.." : "Login"}
+        </button>
 
         <div className="my-6 flex items-center">
 

@@ -1,12 +1,20 @@
+import { useEffect, useState } from "react";
 import Header from "../../components/header";
-import {
-  FaChalkboardTeacher,
-  FaClipboardList,
-  FaUserShield,
-} from "react-icons/fa";
-import { GiTeacher } from "react-icons/gi";
+import { FaChalkboardTeacher, FaClipboardList, FaUserShield } from "react-icons/fa";
+import { getProfile } from "../../api/userApi";
 
 const InstructorHome = () => {
+  const[name, setName] = useState("")
+  useEffect(() => {
+    fetchUserName()
+  },[])
+
+  const fetchUserName = async() => {
+    const response = await getProfile()
+    if(response.success){
+      setName(response.data?.user?.name)
+    }
+  }
   return (
     <div className="min-h-screen bg-[#070B08] text-white">
       <Header />
@@ -15,9 +23,9 @@ const InstructorHome = () => {
         {/* Welcome Section */}
         <div className="mb-12">
         <h1 className="text-5xl font-bold">
-          Welcome Back{" _ "}
+          Welcome Back{" "}
           <span className="inline-flex items-center gap-2 text-green-400">
-            Instructor
+            {name.charAt(0).toUpperCase() + name.slice(1)}
           </span>
         </h1>
 
