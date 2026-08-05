@@ -116,13 +116,12 @@ return (
             ...prev,
             role: "STUDENT",
           }));
-
           setError({});
         }}
-        className={`rounded-full px-4 py-2 transition ${
+        className={`px-6 py-2 rounded-full border transition-all duration-300
           formData.role === "STUDENT"
-            ? "bg-green-500 text-black"
-            : "border border-green-500/30 text-white"
+            ? "bg-green-500 text-black border-green-500"
+            : "border-white/20 text-white hover:border-green-400"
         }`}>STUDENT</button>
 
         <button 
@@ -135,10 +134,10 @@ return (
 
           setError({});
         }}
-        className={`rounded-full px-4 py-2 transition ${
+        className={`px-6 py-2 rounded-full border transition-all duration-300
           formData.role === "INSTRUCTOR"
-            ? "bg-green-500 text-black"
-            : "border border-green-500/30 text-white"
+            ? "bg-green-500 text-black border-green-500"
+            : "border-white/20 text-white hover:border-green-400"
         }`}>INSTRUCTOR</button>
       </div>
 

@@ -17,7 +17,7 @@ const Input = ({ label, type, placeholder, name, value, onChange, autocomplete, 
   const [showPassword, setShowPassword] = useState(false)
 
   return (
-    <div className="mb-5">
+    <div className="mb-4">
 
       <label className="mb-2 block text-sm text-gray-300">{label}</label>
 
@@ -34,7 +34,7 @@ const Input = ({ label, type, placeholder, name, value, onChange, autocomplete, 
           value={value}
           onChange={onChange}
           autoComplete={autocomplete}
-          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-gray-500 outline-none transition-all duration-300 focus:border-green-400 focus:ring-2 focus:ring-green-500/30"
+          className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-white placeholder:text-gray-500 outline-none transition-all duration-300 focus:border-green-400 focus:ring-2 focus:ring-green-500/30"
           />
 
           {type === "password" && (
