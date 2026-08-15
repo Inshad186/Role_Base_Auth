@@ -15,6 +15,7 @@ import { setAccessToken, logout } from "./redux/slices/authSlice"
 import { removeUser, setUser } from "./redux/slices/userSlice"
 import ForgotPassword from "./pages/auth/forgotPassword"
 import ResetPassword from "./pages/auth/resetPassword"
+import VerifyOtp from "./pages/auth/verifyOtp"
 
 const App = () => {
 
@@ -46,6 +47,7 @@ const App = () => {
       <Route path="/studentProfile" element={<ProtectedRoute><StudentProfile/></ProtectedRoute>}/>
       <Route path="/instructorProfile" element={<ProtectedRoute><InstructorProfile/></ProtectedRoute>}/>
       <Route path="/forgotPassword" element={<ForgotPassword/>}/>
+      <Route path="/verifyOtp" element={<VerifyOtp/>}/>
       <Route path="/resetPassword/:resetToken" element={<ResetPassword/>}/>
     </Routes>
   )

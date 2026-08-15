@@ -58,14 +58,37 @@ const forgotPassword = async(email: string) => {
         if(!user){
             throw new Error("Email not found");
         }
-        const resetToken = crypto.randomBytes(32).toString("hex")
+        const otp = crypto.randomInt(100000, 1000000).toString()
 
-        await redisClient.set(`password_reset:${resetToken}`, user._id.toString(), {EX: 900})
+        await redisClient.set(`password_reset:${user._id.toString()}`, otp, {EX: 300})
 
-        const resetUrl = `http://localhost:5173/resetPassword/${resetToken}`
+        await sendPasswordResetEmail(user.email, otp)
+    } catch (error) {
+        throw error
+    }
+}
 
-        await sendPasswordResetEmail(user.email, resetUrl)
-        console.log("Sending reset email to:", user.email);
+const verifyOtp = async(email: string, otp: string) => {
+    try {
+        const user = await authRepository.findOne(email)
+        if(!user){
+            throw new Error("Email not found")
+        }
+        const storedOtp = await redisClient.get(`password_reset:${user._id.toString()}`)
+
+        if(!storedOtp){
+            throw new Error("OTP expired or invalid")
+        }
+        if(storedOtp !== otp){
+            throw new Error("Invalid otp")
+        }
+        await redisClient.del(`password_reset${user._id.toString()}`)
+
+        const resetToken = crypto.randomBytes(32).toString("hex");
+
+        await redisClient.set(`password_reset${resetToken}`, user._id.toString(), {EX: 600})
+
+        return resetToken;
     } catch (error) {
         throw error
     }
@@ -129,6 +152,7 @@ export const authService = {
     signUp,
     login,
     forgotPassword,
+    verifyOtp,
     resetToken,
     getProfile,
     refreshToken

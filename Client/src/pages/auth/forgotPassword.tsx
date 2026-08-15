@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Input from '../../components/auth/authInput'
 import { emailRegex } from '../../utils/regex.utils';
 import { forgotPassword } from '../../api/userApi';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 interface ErrorState {
@@ -14,6 +15,8 @@ const ForgotPassword = () => {
     const [email, setEmail] = useState("")
     const [error, setError] = useState<ErrorState>({field: "", message: ""})
     const [loading, setLoading] = useState(false)
+
+    const navigate = useNavigate()
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {value} = e.target;
@@ -37,6 +40,7 @@ const ForgotPassword = () => {
           }
           if(response.success){
             toast.success("Reset link sent! Please check your email.")
+            navigate(`/verifyOtp?email=${encodeURIComponent(email)}`)
           }
           
         } catch (error) {

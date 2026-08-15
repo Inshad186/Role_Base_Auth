@@ -37,6 +37,16 @@ export const forgotPassword = async(req: Request, res: Response, next: NextFunct
     }
 }
 
+export const verifyOtp = async(req: Request, res: Response, next: NextFunction) =>{
+    try {
+        const {email, otp} = req.body;
+        const resetToken = await authService.verifyOtp(email, otp)
+        res.status(200).json({success: true, resetToken})
+    } catch (error) {
+        next();
+    }
+}
+
 export const resetPassword = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const {token, password} = req.body;
@@ -83,6 +93,7 @@ export const authController = {
     signUp,
     login,
     forgotPassword,
+    verifyOtp,
     resetPassword,
     getProfile,
     refreshToken,

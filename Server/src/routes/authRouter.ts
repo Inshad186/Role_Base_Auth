@@ -8,6 +8,7 @@ const router = Router()
 router.post("/signup", authController.signUp.bind(authController));
 router.post("/login", authController.login.bind(authController));
 router.post("/forgotPassword", authController.forgotPassword.bind(authController));
+router.post("/verify_otp", authController.verifyOtp.bind(authController));
 router.post("/resetPassword", authController.resetPassword.bind(authController));
 router.get("/profile",authMiddleware, roleMiddleware("STUDENT", "INSTRUCTOR"), authController.getProfile.bind(authController));
 router.post("/refreshToken", authController.refreshToken.bind(authController));

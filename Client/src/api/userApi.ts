@@ -34,6 +34,17 @@ export const forgotPassword = async(email: string) => {
     }
 }
 
+export const verifyOtp = async(email: string, otp: string) => {
+    try {
+        const { data } = await Api.post(endpointUrl.VERIFY_OTP, {email, otp})
+        return {success: true, data}
+    } catch (error) {
+        const err = error as any;
+        const message = err.response?.data?.error || "Something went wrong";
+        return {success: false, error: message}
+    }
+}
+
 export const resetPassword = async(token :string, password: string) => {
     try {
         const { data } = await Api.post(endpointUrl.RESETPASSWORD, {token, password})

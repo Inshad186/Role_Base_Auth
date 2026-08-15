@@ -7,8 +7,11 @@ const passwordRegex = {
     specialChar: /[!@#$%^&*(),.?":{}|<>+-]/
 };
 
+const otpRegex = /^\d{0,6}$/;
+
 export {
     nameRegex,
     emailRegex,
-    passwordRegex
+    passwordRegex,
+    otpRegex
 }

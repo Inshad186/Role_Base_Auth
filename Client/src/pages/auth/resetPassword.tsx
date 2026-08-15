@@ -15,8 +15,6 @@ const ResetPassword = () => {
   const navigate = useNavigate();
   const { resetToken } = useParams();
 
-  console.log("Token: ",resetToken)
-
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<Error>({field: "", message: ""})
