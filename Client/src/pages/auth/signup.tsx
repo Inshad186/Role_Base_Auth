@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthLayout from "../../components/auth/authLayout"
-import Input from "../../components/common/input";
+import Input from "../../components/auth/authInput";
 import Button from "../../components/common/button";
 import SocialLogin from "../../components/auth/socialLogin";
 import { signup } from "../../api/userApi";

@@ -27,6 +27,26 @@ export const login = async(req: Request, res: Response, next: NextFunction) => {
     }
 }
 
+export const forgotPassword = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const {email} = req.body
+        await authService.forgotPassword(email)
+        res.status(200).json({success: true})
+    } catch (error) {
+        next()
+    }
+}
+
+export const resetPassword = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const {token, password} = req.body;
+        await authService.resetToken(token, password)
+        res.status(200).json({success: true, message: "Password reset successfully"})
+    } catch (error) {
+        next();
+    }
+}
+
 export const getProfile = async(req: Request, res: Response, next: NextFunction) => {
     try {
         let userId = (req as any).user.userId
@@ -62,6 +82,8 @@ export const logout = async ( req: Request, res: Response )=> {
 export const authController = {
     signUp,
     login,
+    forgotPassword,
+    resetPassword,
     getProfile,
     refreshToken,
     logout

@@ -23,6 +23,28 @@ export const login = async(formData: any) => {
     }
 }
 
+export const forgotPassword = async(email: string) => {
+    try {
+        const {data} = await Api.post(endpointUrl.FORGOTPASSWORD, {email})
+        return {success: true, data}
+    } catch (error) {
+        const err = error as any
+        const message = err.response?.data?.error || "Something went wrong"
+        return {success: false, error: message} 
+    }
+}
+
+export const resetPassword = async(token :string, password: string) => {
+    try {
+        const { data } = await Api.post(endpointUrl.RESETPASSWORD, {token, password})
+        return {success: true, data}
+    } catch (error) {
+        const err = error as any;
+        const message = err.response?.data?.error || "Something went wrong"
+        return {success: false, error: message}
+    }
+}
+
 export const home = async() => {
     try {
         const { data } = await Api.get(endpointUrl.HOME)

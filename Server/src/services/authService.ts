@@ -1,6 +1,9 @@
 import bcrypt from "bcryptjs"
 import { authRepository } from "../repositories/authRepository"
 import { generateAccessToken, generateRefreshToken, verifyToken } from "../utils/jwt"
+import crypto from "crypto";
+import redisClient from "../config/redisConfig";
+import { sendPasswordResetEmail } from "../utils/mailtemplate";
 
 const signUp = async(data: any) => {
     try {
@@ -49,6 +52,42 @@ const login = async(email: string, password: string) => {
     }
 }
 
+const forgotPassword = async(email: string) => {
+    try {
+        const user = await authRepository.findOne(email)
+        if(!user){
+            throw new Error("Email not found");
+        }
+        const resetToken = crypto.randomBytes(32).toString("hex")
+
+        await redisClient.set(`password_reset:${resetToken}`, user._id.toString(), {EX: 900})
+
+        const resetUrl = `http://localhost:5173/resetPassword/${resetToken}`
+
+        await sendPasswordResetEmail(user.email, resetUrl)
+        console.log("Sending reset email to:", user.email);
+    } catch (error) {
+        throw error
+    }
+}
+
+const resetToken = async(token: string, password: string) => {
+    try {
+        const userId = await redisClient.get(`password_reset:${token}`)
+
+        if(!userId){
+            throw new Error("Invalid or expired reset token")
+        }
+        const hashedPassword = await bcrypt.hash(password, 10)
+
+        await authRepository.updatePassword(userId, hashedPassword)
+
+        await redisClient.del(`password_reset:${token}`)
+    } catch (error) {
+        
+    }
+}
+
 const getProfile = async(userId: string) => {
     try {
         let user = await authRepository.findById(userId)
@@ -89,6 +128,8 @@ const refreshToken = async(token: string) => {
 export const authService = {
     signUp,
     login,
+    forgotPassword,
+    resetToken,
     getProfile,
     refreshToken
 }

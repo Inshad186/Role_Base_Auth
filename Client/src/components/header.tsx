@@ -55,10 +55,6 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden items-center gap-4 md:flex lg:gap-6">
-          <Button
-            className="text-gray-300 transition hover:text-green-400"
-            text="Home"
-          />
 
           <button
             onClick={handleProfile}

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthLayout from "../../components/auth/authLayout"
-import Input from "../../components/common/input";
+import Input from "../../components/auth/authInput";
 import Button from "../../components/common/button";
 import SocialLogin from "../../components/auth/socialLogin";
 import { login } from "../../api/userApi";
@@ -49,6 +49,7 @@ const Login = () => {
 
     try {
       const response = await login(formData);
+      console.log("Login Response: ",response)
 
       if (!response.success) {
         setError({
@@ -61,9 +62,9 @@ const Login = () => {
       if (response.success) {
         dispatch(setAccessToken(response.data?.accessToken));
 
-        if (response.data.role === "STUDENT") {
+        if (response.data?.role === "STUDENT") {
           navigate("/studentHome");
-        } else if(response.data.role === "INSTRUCTOR") {
+        } else if(response.data?.role === "INSTRUCTOR") {
           navigate("/instructorHome");
         }
       }
@@ -113,6 +114,7 @@ const Login = () => {
           <button
             type="button"
             className="text-sm text-green-400 hover:text-green-300"
+            onClick={() => navigate("/forgotPassword")}
           >
             Forgot Password?
           </button>

@@ -13,6 +13,8 @@ import { endpointUrl } from "./constants/endpointUrl"
 import { useDispatch } from "react-redux"
 import { setAccessToken, logout } from "./redux/slices/authSlice"
 import { removeUser, setUser } from "./redux/slices/userSlice"
+import ForgotPassword from "./pages/auth/forgotPassword"
+import ResetPassword from "./pages/auth/resetPassword"
 
 const App = () => {
 
@@ -43,6 +45,8 @@ const App = () => {
       <Route path="/instructorHome" element={<ProtectedRoute><InstructorHome/></ProtectedRoute>}/>
       <Route path="/studentProfile" element={<ProtectedRoute><StudentProfile/></ProtectedRoute>}/>
       <Route path="/instructorProfile" element={<ProtectedRoute><InstructorProfile/></ProtectedRoute>}/>
+      <Route path="/forgotPassword" element={<ForgotPassword/>}/>
+      <Route path="/resetPassword/:resetToken" element={<ResetPassword/>}/>
     </Routes>
   )
 }

@@ -12,8 +12,17 @@ const create = (data: any) => {
     return userModel.create(data)
 }
 
+const updatePassword = (userId: string, password: string) => {
+    return userModel.findByIdAndUpdate(
+        userId,
+        {$set: {password}},
+        {new: true}
+    )
+}
+
 export const authRepository = {
     findOne,
     findById,
-    create
+    create,
+    updatePassword
 }
