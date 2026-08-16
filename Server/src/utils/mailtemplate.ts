@@ -85,8 +85,6 @@ If you did not request a password reset, you can safely ignore this email.
       `,
     });
 
-    console.log("Password reset OTP email sent successfully");
-
   } catch (error) {
     console.error(
       "Failed to send password reset email:",

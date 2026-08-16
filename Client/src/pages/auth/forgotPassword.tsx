@@ -42,9 +42,7 @@ const ForgotPassword = () => {
             toast.success("Reset link sent! Please check your email.")
             navigate(`/verifyOtp?email=${encodeURIComponent(email)}`)
           }
-          
         } catch (error) {
-            console.error("Forgot password failed:", error);
             toast.error("Something went wrong. Please try again.")
         } finally {
             setLoading(false)

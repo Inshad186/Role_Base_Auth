@@ -12,7 +12,7 @@ const VerifyOtp = () => {
 
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
-  const [resendTimer, setResendTimer] = useState(10)
+  const [resendTimer, setResendTimer] = useState(60)
 
     useEffect(() => {
     if (resendTimer === 0) {
@@ -56,11 +56,9 @@ const VerifyOtp = () => {
       if(response.success){
         const resetToken = response.data?.resetToken
         toast.success("OTP verified successfully")
-        navigate(`/resetPassword/:${resetToken}`)
+        navigate(`/resetPassword/${resetToken}`)
       }
-
     } catch (error) {
-      console.error("OTP verification failed:", error);
       toast.error("Invalid or expired OTP");
     } finally {
       setLoading(false);
@@ -79,7 +77,7 @@ const VerifyOtp = () => {
 
         if (response.success) {
             toast.success("New OTP sent to your email");
-            setResendTimer(10)
+            setResendTimer(60)
         } else {
             toast.error("Unable to resend OTP");
         }

@@ -22,10 +22,7 @@ interface ErrorState {
 const Login = () => {
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState<LoginForm>({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState<LoginForm>({email: "",password: "" });
 
   const [error, setError] = useState<ErrorState>({field: "", message: ""});
   const [loading, setLoading] = useState(false)
@@ -49,13 +46,8 @@ const Login = () => {
 
     try {
       const response = await login(formData);
-      console.log("Login Response: ",response)
-
       if (!response.success) {
-        setError({
-          field: "form",
-          message: response.error,
-        });
+        setError({ field: "form", message: response.error });
         return;
       }
 
@@ -89,7 +81,7 @@ const Login = () => {
           name="email"
           placeholder="Enter your email"
           value={formData.email}
-          autocomplete="email"
+          autocomplete='email'
           onChange={handleChange}
         />
 
@@ -99,7 +91,7 @@ const Login = () => {
           name="password"
           placeholder="Enter your password"
           value={formData.password}
-          autocomplete="current-password"
+          autocomplete="new-password"
           onChange={handleChange}
         />
 
@@ -123,9 +115,9 @@ const Login = () => {
 
         <button 
         type="submit"
-        disabled={loading}
+        disabled={ loading || formData.email.trim() === "" || formData.password.trim() === ""}
         className="w-full rounded-xl bg-green-500 py-3 font-semibold text-black transition-all duration-300 
-        hover:scale-[1.02] hover:bg-green-400 hover:shadow-lg hover:shadow-green-500/40">
+        hover:scale-[1.02] hover:bg-green-400 hover:shadow-lg hover:shadow-green-500/40 disabled:cursor-not-allowed disabled:opacity-50">
           {loading? "Logging in.." : "Login"}
         </button>
 
@@ -153,7 +145,6 @@ const Login = () => {
           >
             Create Account
           </span>
-
         </p>
 
       </form>

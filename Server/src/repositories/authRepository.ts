@@ -15,8 +15,7 @@ const create = (data: any) => {
 const updatePassword = (userId: string, password: string) => {
     return userModel.findByIdAndUpdate(
         userId,
-        {$set: {password}},
-        {new: true}
+        {$set: {password}}
     )
 }
 

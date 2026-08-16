@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import Header from "../../components/header";
 import { FaBookOpen, FaLock, FaUserGraduate } from "react-icons/fa";
 import { getProfile } from "../../api/userApi";
+import { useNavigate } from "react-router-dom";
 
 
 const StudentHome = () => {
   const [name, setName] = useState("")
+  const [role, setRole] = useState("")
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetchUserName()
@@ -15,6 +19,7 @@ const StudentHome = () => {
     const response = await getProfile()
     if(response.success){
       setName(response.data?.user?.name)
+      setRole(response.data?.user?.role.toLowerCase())
     }
   }
   return (
@@ -44,7 +49,9 @@ const StudentHome = () => {
               Start Exam
             </button>
 
-            <button className="rounded-xl border border-green-500/30 px-6 py-3 text-green-400 transition hover:bg-green-500/10">
+            <button 
+            onClick={() => navigate(`/${role}Profile`)}
+            className="rounded-xl border border-green-500/30 px-6 py-3 text-green-400 transition hover:bg-green-500/10">
               View Profile
             </button>
 

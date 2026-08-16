@@ -5,6 +5,7 @@ import Input from "../../components/auth/authInput";
 import Button from "../../components/common/button";
 import { resetPassword } from "../../api/userApi";
 import { passwordRegex } from "../../utils/regex.utils";
+import { toast } from "sonner";
 
 interface Error {
   field: string;
@@ -50,7 +51,7 @@ const ResetPassword = () => {
 
       const response = await resetPassword(resetToken, password)
       if(response.success){
-        console.log("Successfully password Resetted...")
+        toast.success("Successfully password Resetted...")
         navigate("/login")
       }
     } catch (error) {

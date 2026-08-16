@@ -50,7 +50,7 @@ export const verifyOtp = async(req: Request, res: Response, next: NextFunction) 
 export const resetPassword = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const {token, password} = req.body;
-        await authService.resetToken(token, password)
+        await authService.resetPassword(token, password)
         res.status(200).json({success: true, message: "Password reset successfully"})
     } catch (error) {
         next();

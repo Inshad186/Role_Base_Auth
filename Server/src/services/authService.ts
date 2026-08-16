@@ -59,6 +59,7 @@ const forgotPassword = async(email: string) => {
             throw new Error("Email not found");
         }
         const otp = crypto.randomInt(100000, 1000000).toString()
+        console.log("OTP : ",otp)
 
         await redisClient.set(`password_reset:${user._id.toString()}`, otp, {EX: 300})
 
@@ -82,11 +83,11 @@ const verifyOtp = async(email: string, otp: string) => {
         if(storedOtp !== otp){
             throw new Error("Invalid otp")
         }
-        await redisClient.del(`password_reset${user._id.toString()}`)
+        await redisClient.del(`password_reset:${user._id.toString()}`)
 
         const resetToken = crypto.randomBytes(32).toString("hex");
 
-        await redisClient.set(`password_reset${resetToken}`, user._id.toString(), {EX: 600})
+        await redisClient.set(`password_reset:${resetToken}`, user._id.toString(), {EX: 600})
 
         return resetToken;
     } catch (error) {
@@ -94,9 +95,10 @@ const verifyOtp = async(email: string, otp: string) => {
     }
 }
 
-const resetToken = async(token: string, password: string) => {
+const resetPassword = async(token: string, password: string) => {
     try {
-        const userId = await redisClient.get(`password_reset:${token}`)
+
+        const userId = await redisClient.get(`password_reset:${token}`);
 
         if(!userId){
             throw new Error("Invalid or expired reset token")
@@ -107,7 +109,7 @@ const resetToken = async(token: string, password: string) => {
 
         await redisClient.del(`password_reset:${token}`)
     } catch (error) {
-        
+        throw error;
     }
 }
 
@@ -153,7 +155,7 @@ export const authService = {
     login,
     forgotPassword,
     verifyOtp,
-    resetToken,
+    resetPassword,
     getProfile,
     refreshToken
 }
