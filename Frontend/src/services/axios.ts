@@ -10,7 +10,7 @@ const getAccessToken = (): string | null => {
 }
 
 const Api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
+    baseURL: "",
     withCredentials: true
 })
 

@@ -91,6 +91,12 @@ const ResetPassword = () => {
           autocomplete="new-password"
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
+        
+        {error.field === "form" && (
+          <p className="mb-4 text-center text-red-500">
+            {error.message}
+          </p>
+        )}
 
         {/* Reset Button */}
         <Button

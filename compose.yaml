@@ -1,0 +1,67 @@
+services:
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+
+    image: examix-frontend:latest
+
+    container_name: examix-frontend
+
+    ports:
+      - "3000:80"
+
+    depends_on:
+      - backend
+
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+
+    image: examix-backend:latest
+
+    container_name: examix-backend
+
+    ports:
+      - "5001:5001"
+
+    env_file:
+      - ./Backend/.env
+
+    environment:
+      PORT: 5001
+      REDIS_URL: redis://redis:6379
+      MONGODB_URL: mongodb://mongo:27017/role_base_auth
+      CLIENT_URL: http://localhost:3000
+
+    depends_on:
+      - redis
+      - mongo
+
+
+  redis:
+    image: redis:latest
+
+    container_name: examix-redis
+
+    ports:
+      - "6379:6379"
+
+
+  mongo:
+    image: mongo:latest
+
+    container_name: examix-mongo
+
+    ports:
+      - "27017:27017"
+
+    volumes:
+      - mongo_data:/data/db
+
+
+volumes:
+  mongo_data:

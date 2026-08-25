@@ -119,7 +119,7 @@ return (
           setError({});
         }}
         className={`px-6 py-2 rounded-full border transition-all duration-300
-          formData.role === "STUDENT"
+          ${formData.role === "STUDENT"
             ? "bg-green-500 text-black border-green-500"
             : "border-white/20 text-white hover:border-green-400"
         }`}>STUDENT</button>
@@ -135,7 +135,7 @@ return (
           setError({});
         }}
         className={`px-6 py-2 rounded-full border transition-all duration-300
-          formData.role === "INSTRUCTOR"
+          ${formData.role === "INSTRUCTOR"
             ? "bg-green-500 text-black border-green-500"
             : "border-white/20 text-white hover:border-green-400"
         }`}>INSTRUCTOR</button>

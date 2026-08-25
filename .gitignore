@@ -1,14 +1,21 @@
 # Dependencies
-Client/node_modules/
-Server/node_modules/
+Frontend/node_modules/
+Backend/node_modules/
 
 # Environment files
-Client/.env
-Server/.env
+Frontend/.env
+Backend/.env
+.env
 
 # Build output
-Client/dist/
-Server/dist/
+Frontend/dist/
+Backend/dist/
 
 # Log files
 *.log
+
+# Editor / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

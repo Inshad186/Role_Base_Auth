@@ -21,36 +21,33 @@ const signUp = async(data: any) => {
     }
 }
 
-const login = async(email: string, password: string) => {
+const login = async (email: string, password: string) => {
     try {
-        const user = await authRepository.findOne(email)
+        const user = await authRepository.findOne(email);
+
         if (!user) {
             throw new Error("Invalid email or password");
         }
+        const isPasswordValid = await bcrypt.compare( password, user.password );
 
-        const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             throw new Error("Invalid email or password");
         }
+        const accessToken = generateAccessToken({
+            userId: user._id.toString(),
+            role: user.role
+        });
+        const refreshToken = generateRefreshToken({
+            userId: user._id.toString(),
+            role: user.role
+        });
+        return { accessToken, refreshToken, role: user.role};
 
-        const accessToken = generateAccessToken(
-            {
-                userId: user._id.toString(),
-                role: user.role
-            }
-        )
-
-        const refreshToken = generateRefreshToken(
-            {
-                userId: user._id.toString(),
-                role: user.role
-            }
-        )
-        return { accessToken, refreshToken, role: user.role}
     } catch (error) {
-        throw error
+        console.error("LOGIN SERVICE ERROR :", error);
+        throw error;
     }
-}
+};
 
 const forgotPassword = async(email: string) => {
     try {

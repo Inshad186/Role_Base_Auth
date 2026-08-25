@@ -7,7 +7,7 @@ import ProtectedRoute from "./routes/protectedRoute"
 import StudentProfile from "./pages/student/studentProfile"
 import InstructorProfile from "./pages/instructor/instructorProfile"
 import LandingPage from "./pages/landingPage"
-import { useEffect } from "react"
+import { useState, useEffect } from "react"
 import Api from "./services/axios"
 import { endpointUrl } from "./constants/endpointUrl"
 import { useDispatch } from "react-redux"
@@ -18,24 +18,40 @@ import ResetPassword from "./pages/auth/resetPassword"
 import VerifyOtp from "./pages/auth/verifyOtp"
 
 const App = () => {
+  const dispatch = useDispatch();
+  const [checkingAuth, setCheckingAuth] = useState(true);
 
-  const dispatch = useDispatch()
-
-    useEffect(() => {
+  useEffect(() => {
     const restoreSession = async () => {
       try {
         const response = await Api.post(endpointUrl.REFRESH);
 
+        console.log("SESSION RESTORED:", response.data);
+
         dispatch(setAccessToken(response.data.accessToken));
-        dispatch(setUser(response.data.user));
-      } catch {
+
+        if (response.data.user) {
+          dispatch(setUser(response.data.user));
+        }
+      } catch (error) {
+        console.log("NO ACTIVE SESSION");
         dispatch(logout());
         dispatch(removeUser());
+      } finally {
+        setCheckingAuth(false);
       }
     };
 
     restoreSession();
-  }, []);
+  }, [dispatch]);
+
+  if (checkingAuth) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#0B0F0D] text-green-400">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <Routes>

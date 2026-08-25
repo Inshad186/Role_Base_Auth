@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthLayout from "../../components/auth/authLayout"
 import Input from "../../components/auth/authInput";
-import Button from "../../components/common/button";
 import SocialLogin from "../../components/auth/socialLogin";
 import { login } from "../../api/userApi";
 import { useDispatch } from "react-redux";
@@ -46,6 +45,7 @@ const Login = () => {
 
     try {
       const response = await login(formData);
+      console.log("Login Response : ",response)
       if (!response.success) {
         setError({ field: "form", message: response.error });
         return;
@@ -53,11 +53,17 @@ const Login = () => {
 
       if (response.success) {
         dispatch(setAccessToken(response.data?.accessToken));
+        console.log("Access token dispatched:",response.data?.accessToken);
 
+        console.log("ROLE:", response.data?.role);
         if (response.data?.role === "STUDENT") {
+          console.log("Navigating to studentHome");
           navigate("/studentHome");
         } else if(response.data?.role === "INSTRUCTOR") {
+          console.log("Navigating to instructorHome");
           navigate("/instructorHome");
+        } else {
+          console.log("Unknown role:", response.data?.role);
         }
       }
     } catch (error) {
