@@ -3,8 +3,6 @@ Frontend/node_modules/
 Backend/node_modules/
 
 # Environment files
-Frontend/.env
-Backend/.env
 .env
 
 # Build output
