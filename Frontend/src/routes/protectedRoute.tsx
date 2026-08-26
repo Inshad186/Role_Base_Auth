@@ -9,7 +9,6 @@ type Props = {
 
 const ProtectedRoute = ({children} : Props) => {
     const token = useSelector((state: RootState) => state.auth?.accessToken)
-    console.log("Protected Route Token : ",token)
 
     if(!token){
         return <Navigate to={"/login"} replace />

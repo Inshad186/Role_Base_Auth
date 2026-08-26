@@ -26,8 +26,6 @@ const App = () => {
       try {
         const response = await Api.post(endpointUrl.REFRESH);
 
-        console.log("SESSION RESTORED:", response.data);
-
         dispatch(setAccessToken(response.data.accessToken));
 
         if (response.data.user) {

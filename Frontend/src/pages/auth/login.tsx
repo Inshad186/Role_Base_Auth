@@ -45,7 +45,7 @@ const Login = () => {
 
     try {
       const response = await login(formData);
-      console.log("Login Response : ",response)
+
       if (!response.success) {
         setError({ field: "form", message: response.error });
         return;
@@ -53,17 +53,10 @@ const Login = () => {
 
       if (response.success) {
         dispatch(setAccessToken(response.data?.accessToken));
-        console.log("Access token dispatched:",response.data?.accessToken);
-
-        console.log("ROLE:", response.data?.role);
         if (response.data?.role === "STUDENT") {
-          console.log("Navigating to studentHome");
           navigate("/studentHome");
         } else if(response.data?.role === "INSTRUCTOR") {
-          console.log("Navigating to instructorHome");
           navigate("/instructorHome");
-        } else {
-          console.log("Unknown role:", response.data?.role);
         }
       }
     } catch (error) {
