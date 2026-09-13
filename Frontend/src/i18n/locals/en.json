@@ -1,0 +1,36 @@
+{
+  "langLogin": {
+    "title": "Welcome Back 👋",
+    "subtitle": "Login to continue your online examination journey.",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "forgotPassword": "Forgot Password?",
+    "loginButton": "Login",
+    "loggingIn": "Logging in...",
+    "or": "OR",
+    "noAccount": "Don't have an account?",
+    "createAccount": "Create Account"
+  },
+
+  "langSignup": {
+    "title": "Create Account",
+    "subtitle": "Join Examix and begin your online examination journey.",
+    "name" : "Full Name",
+    "namePlaceholder" : "Enter your full name",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Create a password",
+    "loginButton": "Login", 
+    "createButton": "Create Account",
+    "creating": "Creating..",
+    "or": "OR",
+    "existAccount": "Already have an account?",
+    "google": "Continue with Google",
+    "student" : "STUDENT",
+    "instructor": "INSTRUCTOR",
+    "google" : "Continue with Google"
+  }
+}

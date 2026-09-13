@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import authBag from "../../assets/auth_bg.png";
+import LanguageMenu from "../languageMenu";
 
 interface AuthLayoutProps {
   title: string;
@@ -18,23 +19,15 @@ const ImageSection = () => {
         backgroundPosition: "center",
       }}
     >
-      {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/60" />
-
-      {/* Green Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-green-500/15 via-black/25 to-green-900/40" />
 
-      {/* Content */}
       <div className="relative z-10 flex h-full flex-col justify-between p-10 lg:p-12">
-        {/* Logo */}
         <div className="flex items-center gap-3">
           <div className="h-3 w-3 rounded-full bg-green-400 shadow-[0_0_20px_#22c55e]" />
-          <h2 className="text-2xl font-bold tracking-wide text-white">
-            Examix
-          </h2>
+          <h2 className="text-2xl font-bold tracking-wide text-white">Examix</h2>
         </div>
 
-        {/* Hero Content */}
         <div>
           <p className="mb-3 text-sm uppercase tracking-[0.3em] text-green-400">
             Online Examination Platform
@@ -52,7 +45,6 @@ const ImageSection = () => {
           </p>
         </div>
 
-        {/* Footer */}
         <div>
           <div className="h-px bg-white/20" />
           <p className="mt-5 text-sm text-gray-400">
@@ -66,24 +58,42 @@ const ImageSection = () => {
 
 const AuthLayout = ({ title, subtitle, children, imagePosition = "left" }: AuthLayoutProps) => {
   return (
-    <div className="fixed inset-0 flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#1c261e] via-[#0e3421] to-[#000804] p-4 sm:p-6">
-      {/* Main Card */}
-      <div className="flex h-full max-h-[900px] w-full max-w-6xl overflow-hidden rounded-[28px] border border-white/10 bg-[#0B0F0D] shadow-2xl shadow-black/40">
-        {/* Image Panel */}
+    <div className="fixed inset-0 flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#1c261e] via-[#0e3421] to-[#000804] p-2 sm:p-6">
+      <div className="relative flex h-full max-h-[900px] w-full max-w-6xl overflow-hidden rounded-[20px] border border-white/10 bg-[#0B0F0D] shadow-2xl shadow-black/40 sm:rounded-[28px]">
+
+        {/* Language switcher — pinned, fixed size, never competes for space */}
+        <div className="absolute z-20" style={{ right: "clamp(10px, 3vw, 20px)", top: "clamp(10px, 3vh, 20px)" }}>
+          <LanguageMenu />
+        </div>
+
         {imagePosition === "left" && (
           <div className="hidden h-full w-1/2 md:block">
             <ImageSection />
           </div>
         )}
 
-        {/* Form Panel */}
-        <div className="flex h-full w-full flex-col justify-center px-8 py-10 sm:px-12 md:w-1/2 lg:px-14">
-          <div className="mx-auto w-full max-w-md">
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold text-white sm:text-4xl">
+        {/* Form Panel — no scroll; spacing/text scale down on short viewports */}
+        <div
+          className="flex h-full w-full min-w-0 flex-col justify-center md:w-1/2"
+          style={{
+            paddingLeft: "clamp(16px, 4vw, 56px)",
+            paddingRight: "clamp(16px, 4vw, 56px)",
+            paddingTop: "clamp(12px, 4vh, 40px)",
+            paddingBottom: "clamp(12px, 4vh, 40px)",
+          }}
+        >
+          <div className="mx-auto w-full min-w-0 max-w-md">
+            <div style={{ marginBottom: "clamp(12px, 3vh, 32px)" }}>
+              <h1
+                className="break-words font-bold text-white"
+                style={{ fontSize: "clamp(1.25rem, 4vh, 1.875rem)", lineHeight: 1.25 }}
+              >
                 {title}
               </h1>
-              <p className="mt-2 text-sm text-gray-400 sm:text-base">
+              <p
+                className="mt-1 break-words text-gray-400"
+                style={{ fontSize: "clamp(0.75rem, 2vh, 1rem)" }}
+              >
                 {subtitle}
               </p>
             </div>
@@ -92,7 +102,6 @@ const AuthLayout = ({ title, subtitle, children, imagePosition = "left" }: AuthL
           </div>
         </div>
 
-        {/* Image Panel (right position) */}
         {imagePosition === "right" && (
           <div className="hidden h-full w-1/2 md:block">
             <ImageSection />

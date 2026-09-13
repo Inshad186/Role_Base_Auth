@@ -8,6 +8,7 @@ import { signup } from "../../api/userApi";
 import { emailRegex } from "../../utils/regex.utils";
 import { nameRegex } from "../../utils/regex.utils";
 import { passwordRegex } from "../../utils/regex.utils";
+import { useTranslation } from "react-i18next";
 
 interface FormData {
   name: string;
@@ -33,6 +34,8 @@ const Signup = () => {
     )
     const [error, setError] = useState<ErrorState>({field: "", message: ""})
     const [loading, setLoading] = useState(false)
+
+    const { t } = useTranslation()
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const {name, value} = event.target
@@ -104,8 +107,8 @@ const Signup = () => {
 
 return (
   <AuthLayout
-    title="Create Account"
-    subtitle="Join Examix and begin your online examination journey."
+    title={t("langSignup.title")}
+    subtitle={t("langSignup.subtitle")}
     imagePosition="right"
   >
       <div className="mb-6 flex gap-4">
@@ -118,11 +121,12 @@ return (
           }));
           setError({});
         }}
-        className={`px-6 py-2 rounded-full border transition-all duration-300
+        style={{ padding: "clamp(6px, 1.5vh, 8px) clamp(16px, 3vw, 24px)", fontSize: "clamp(0.8rem, 2vh, 1rem)" }}
+        className={`px-6 py-2 cursor-pointer rounded-full border transition-all duration-300
           ${formData.role === "STUDENT"
             ? "bg-green-500 text-black border-green-500"
             : "border-white/20 text-white hover:border-green-400"
-        }`}>STUDENT</button>
+        }`}>{t("langSignup.student")}</button>
 
         <button 
         type="button"
@@ -134,11 +138,13 @@ return (
 
           setError({});
         }}
-        className={`px-6 py-2 rounded-full border transition-all duration-300
+        style={{ padding: "clamp(6px, 1.5vh, 8px) clamp(16px, 3vw, 24px)", fontSize: "clamp(0.8rem, 2vh, 1rem)" }}
+        className={`px-6 py-2 cursor-pointer rounded-full border transition-all duration-300
           ${formData.role === "INSTRUCTOR"
             ? "bg-green-500 text-black border-green-500"
             : "border-white/20 text-white hover:border-green-400"
-        }`}>INSTRUCTOR</button>
+        }`}>{t("langSignup.instructor")}</button>
+
       </div>
 
       {error.field === "role" && (
@@ -149,10 +155,10 @@ return (
 
     <form onSubmit={handleSubmit}>
       <Input
-        label="Full Name"
+        label={t("langSignup.name")}
         type="text"
         name="name"
-        placeholder="Enter your full name"
+        placeholder={t("langSignup.namePlaceholder")}
         value={formData.name}
         autocomplete="name"
         onChange={handleChange}
@@ -160,10 +166,10 @@ return (
       />
 
       <Input
-        label="Email"
+        label={t("langSignup.email")}
         type="email"
         name="email"
-        placeholder="Enter your email"
+        placeholder={t("langSignup.emailPlaceholder")}
         value={formData.email}
         autocomplete="email"
         onChange={handleChange}
@@ -171,10 +177,10 @@ return (
       />
 
       <Input
-        label="Password"
+        label={t("langSignup.password")}
         type="password"
         name="password"
-        placeholder="Create a password"
+        placeholder={t("langSignup.passwordPlaceholder")}
         value={formData.password}
         autocomplete="new-password"
         onChange={handleChange}
@@ -182,29 +188,27 @@ return (
       />
 
       <Button 
-      text={loading? "Creating.." : "Create Account"} 
+      text={loading ? t("langSignup.creating") : t("langSignup.createButton")}
       className="w-full rounded-xl bg-green-500 py-3 font-semibold text-black transition-all duration-300 
         hover:scale-[1.02] hover:bg-green-400 hover:shadow-lg hover:shadow-green-500/40"/>
 
-      <div className="my-6 flex items-center">
+      <div className="flex items-center" style={{ margin: "clamp(12px, 3vh, 24px) 0" }}>
         <div className="h-px flex-1 bg-white/10"></div>
-
-        <span className="mx-4 text-sm text-gray-500">
-          OR
+        <span className="mx-4 text-gray-500" style={{ fontSize: "clamp(0.75rem, 1.8vh, 0.875rem)" }}>
+          {t("langSignup.or")}
         </span>
-
         <div className="h-px flex-1 bg-white/10"></div>
       </div>
 
       <SocialLogin />
 
       <p className="mt-8 text-center text-gray-400">
-        Already have an account?{" "}
+        {t("langSignup.existAccount")}{" "}
         <span
           onClick={() => navigate("/login")}
           className="cursor-pointer text-green-400 hover:text-green-300"
         >
-          Login
+          {t("langSignup.loginButton")}
         </span>
       </p>
 

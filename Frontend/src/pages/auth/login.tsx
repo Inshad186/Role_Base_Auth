@@ -7,6 +7,7 @@ import { login } from "../../api/userApi";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../redux/store";
 import { setAccessToken } from "../../redux/slices/authSlice";
+import { useTranslation } from "react-i18next";
 
 interface LoginForm {
   email: string;
@@ -20,6 +21,8 @@ interface ErrorState {
 
 const Login = () => {
   const navigate = useNavigate();
+
+  const { t } = useTranslation()
 
   const [formData, setFormData] = useState<LoginForm>({email: "",password: "" });
 
@@ -68,27 +71,27 @@ const Login = () => {
 
   return (
     <AuthLayout
-      title="Welcome Back 👋"
-      subtitle="Login to continue your online examination journey."
+      title={t("langLogin.title")}
+      subtitle={t("langLogin.subtitle")}
       imagePosition="left"
     >
       <form onSubmit={handleSubmit}>
 
         <Input
-          label="Email"
+          label={t("langLogin.email")}
           type="email"
           name="email"
-          placeholder="Enter your email"
+          placeholder={t("langLogin.emailPlaceholder")}
           value={formData.email}
           autocomplete='email'
           onChange={handleChange}
         />
 
         <Input
-          label="Password"
+          label={t("langLogin.password")}
           type="password"
           name="password"
-          placeholder="Enter your password"
+          placeholder={t("langLogin.passwordPlaceholder")}
           value={formData.password}
           autocomplete="new-password"
           onChange={handleChange}
@@ -107,7 +110,7 @@ const Login = () => {
             className="text-sm text-green-400 hover:text-green-300"
             onClick={() => navigate("/forgotPassword")}
           >
-            Forgot Password?
+            {t("langLogin.forgotPassword")}
           </button>
 
         </div>
@@ -117,7 +120,7 @@ const Login = () => {
         disabled={ loading || formData.email.trim() === "" || formData.password.trim() === ""}
         className="w-full rounded-xl bg-green-500 py-3 font-semibold text-black transition-all duration-300 
         hover:scale-[1.02] hover:bg-green-400 hover:shadow-lg hover:shadow-green-500/40 disabled:cursor-not-allowed disabled:opacity-50">
-          {loading? "Logging in.." : "Login"}
+          {loading? t("langLogin.loggingIn") : t("langLogin.loginButton")}
         </button>
 
         <div className="my-6 flex items-center">
@@ -125,7 +128,7 @@ const Login = () => {
           <div className="h-px flex-1 bg-white/10"></div>
 
           <span className="mx-4 text-sm text-gray-500">
-            OR
+            {t("langLogin.or")}
           </span>
 
           <div className="h-px flex-1 bg-white/10"></div>
@@ -136,13 +139,13 @@ const Login = () => {
 
         <p className="mt-8 text-center text-gray-400">
 
-          Don't have an account?{" "}
+          {t("langLogin.noAccount")}{" "}
 
           <span
             onClick={() => navigate("/signup")}
             className="cursor-pointer text-green-400 hover:text-green-300"
           >
-            Create Account
+            {t("langLogin.createAccount")}
           </span>
         </p>
 
